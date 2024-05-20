@@ -39,7 +39,7 @@ def build_CNN(exp_config, X_tr, y_tr) -> IntegerLocalLossCNN:
         num_fc_layers=exp_config['num_fc_layers'], num_hidden_fc=exp_config['num_fc_hidden'],
         num_classes=y_tr.shape[1], non_linearity=NonLinearity[exp_config['non_linearity']],
         local_loss=exp_config['local_loss'], subnet_pooling_type=exp_config['pooling_type'],
-        fe_dropout_rate=exp_config['dropout_rate'], fc_dropout_rate=exp_config['dropout_rate'],
+        fe_dropout_rate=exp_config['fe_dropout_rate'], fc_dropout_rate=exp_config['fc_dropout_rate'],
         pred_decoder_dim=exp_config['pred_decoder_dim'], debug=exp_config['debug'],
         bias=exp_config['bias'], dtype=exp_config['dtype'],
         subnet_decay_inv=exp_config['subnet_decay_inv'],
@@ -185,7 +185,7 @@ def train_test_experiment(model, exp_config, X_tr, X_te, y_tr, y_te, augmentatio
     reduce_lr_plateau = ReduceLROnPlateau(factor=3, min_delta=0.01, patience=15, from_epoch=10)
     n_train_batches = len(X_tr) // exp_config['batch_size']
     n_test_batches = len(X_te) // exp_config['batch_size']
-    maX_train_acc = 0.0
+    max_train_acc = 0.0
     max_test_acc = 0.0
 
     for epoch in trange(exp_config['num_epochs'], disable=(not show_progress_bar)):
@@ -213,7 +213,7 @@ def train_test_experiment(model, exp_config, X_tr, X_te, y_tr, y_te, augmentatio
 
         # Keep track of the maximum test accuracy and corresponding train accuracy
         if test_acc > max_test_acc:
-            maX_train_acc = acc
+            max_train_acc = acc
             max_test_acc = test_acc
 
         if show_local_accuracies:
@@ -238,7 +238,7 @@ def train_test_experiment(model, exp_config, X_tr, X_te, y_tr, y_te, augmentatio
             lr_scheduler.set_lr(lr_scheduler.get_lr() * reduce_lr_plateau.factor)
             print(f"{'-' * 64}\nReducing learning rate on plateau at epoch {epoch + 1}\n{'-' * 64}")
 
-    return maX_train_acc, max_test_acc
+    return max_train_acc, max_test_acc
 
 
 def plot_with_std(ax, values, label, log_scale=False) -> None:
