@@ -383,7 +383,6 @@ class IntegerConv2d(Conv2d):
     decay_rate_inv: int, default=0
         The amount of weight decay to apply during parameter updates.
         When equal to 0, no weight decay is applied.
-        When equal to 1, the l2 regularization is maximized.
         With larger numbers, the weight decay is smaller.
     lr_amp_factor: int, default=1
         Amplification factor of the learning rate for this layer.

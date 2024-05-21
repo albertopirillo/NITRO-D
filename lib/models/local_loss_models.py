@@ -30,12 +30,10 @@ class IntegerLocalLossMLP(LocalLossModel):
     fwd_decay_inv: int, default=0
         The amount of weight decay to apply during parameter updates in the forward part of the blocks.
         When equal to 0, no weight decay is applied.
-        When equal to 1, the l2 regularization is maximized.
         With larger numbers, the weight decay is smaller.
     subnet_decay_inv: int, default=0
         The amount of weight decay to apply during parameter updates in the subnetworks of the blocks.
         When equal to 0, no weight decay is applied.
-        When equal to 1, the l2 regularization is maximized.
         With larger numbers, the weight decay is smaller.
     lr_amp_factor: int, default=None
         Amplification factor of the learning rate to be used in local loss blocks.
@@ -209,12 +207,10 @@ class IntegerLocalLossCNN(LocalLossModel):
     fwd_decay_inv: int, default=0
         The amount of weight decay to apply during parameter updates in the forward part of the blocks.
         When equal to 0, no weight decay is applied.
-        When equal to 1, the l2 regularization is maximized.
         With larger numbers, the weight decay is smaller.
     subnet_decay_inv: int, default=0
         The amount of weight decay to apply during parameter updates in the subnetworks of the blocks.
         When equal to 0, no weight decay is applied.
-        When equal to 1, the l2 regularization is maximized.
         With larger numbers, the weight decay is smaller.
     layers: Sequential
         Forward layers of the model, wrapped in a Sequential module
