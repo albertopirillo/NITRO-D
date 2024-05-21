@@ -14,11 +14,10 @@ from lib.utils.nn import create_non_linearity
 
 class LocalConv2dBlock(LocalLossBlock):
     """
-    A local loss block containing the following layers:
-    - Integer arithmetic Conv2d layer
+    A local-loss block containing the following layers:
+    - Integer Conv2d layer
     - Scaling layer
     - Non-linearity
-    - Dropout layer (optional)
 
     Attributes
     _________
@@ -47,19 +46,19 @@ class LocalConv2dBlock(LocalLossBlock):
         It can be chosen arbitrarily and a pooling layer will be added to the linear subnetwork if needed.
         The larger the dimension, the more accurate the prediction loss will be (aside from overfitting).
     fwd_decay_inv: int, default=0
-        Inverse of the decay rate to be used in the IntegerConv2d layer
+        Inverse of the decay rate to be used in the Integer Conv2d layer
     subnet_decay_inv: int, default=0
-        Inverse of the decay rate to be used in the linear subnetwork layer
+        Inverse of the decay rate to be used in the Integer Linear layer
     bias: bool, default=True
-        Whether to use a bias in the IntegerConv2d layer
+        Whether to use a bias in the Integer layers
     layers: Sequential
-        Forward network of the block
+        The forward layers of the block
     last_activation: np.ndarray
         The output of the block at the previous training step, used to compute the local loss
     pred_loss_net: Sequential
-        The linear local loss subnetwork used to compute the local loss
+        The learning layers used to compute the local loss
     subnet_pooling_type: str, default='max'
-        Type of pooling to be used in the linear subnetwork.
+        Type of pooling layer to be used in the linear subnetwork
     """
 
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int, num_classes: int, dim_out: int,
@@ -104,7 +103,7 @@ class LocalConv2dBlock(LocalLossBlock):
             create_non_linearity(non_linearity, name=f'non_linearity_{name_index:02d}'),
         ]
 
-        # Build the local loss subnetwork
+        # Instantiate the learning layers
         ks_h, ks_w = 1, 1
         match self.local_loss:
             case 'pred':

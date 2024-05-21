@@ -14,8 +14,8 @@ from lib.utils.enums import NonLinearity, Initialization, OptimizerName
 
 class IntegerLocalLossMLP(LocalLossModel):
     """
-    A fully-connected network that can be trained by locally generated error signals.
-    It is composed of num_layers LocalLinearBlocks and by a regular linear layer which is the output.
+    Integer-only Multi-Layer Perceptron (MLP) that can be trained by locally generated error signals.
+    It is composed of num_layers integer local-loss blocks and by a regular Integer Linear layer which is the output.
 
     Attributes
     ----------
@@ -28,15 +28,15 @@ class IntegerLocalLossMLP(LocalLossModel):
     num_hidden_neurons : tuple[int]
         A tuple of integers representing the number of neurons in each hidden layer
     fwd_decay_inv: int, default=0
-        The amount of weight decay to apply during parameter updates in the forward part of the blocks.
+        The amount of weight decay to apply during parameter updates in the forward part of the blocks
         When equal to 0, no weight decay is applied.
         With larger numbers, the weight decay is smaller.
     subnet_decay_inv: int, default=0
-        The amount of weight decay to apply during parameter updates in the subnetworks of the blocks.
+        The amount of weight decay to apply during parameter updates in the learning layers of the blocks
         When equal to 0, no weight decay is applied.
         With larger numbers, the weight decay is smaller.
     lr_amp_factor: int, default=None
-        Amplification factor of the learning rate to be used in local loss blocks.
+        Amplification factor of the learning rate to be used in local loss blocks
         If None, it is computed automatically.
     layers: Sequential
         Forward layers of the model, wrapped in a Sequential module
@@ -162,14 +162,8 @@ class IntegerLocalLossMLP(LocalLossModel):
 
 class IntegerLocalLossCNN(LocalLossModel):
     """
-    Convolutional Neural Network that can be trained by locally generated error signals.
+    Integer-only Convolutional Neural Network that can be trained by locally generated error signals.
     The feature extraction part is entirely specified by the fe_architecture parameter.
-    In general, a convolutional block is composed of:
-    - Convolutional layer
-    - Rescaling layer
-    - Non-linear activation
-    - Dropout layer (optional)
-
     The dense classifier is an IntegerLocalLossMLP model composed of num_fc_layers blocks.
 
     Attributes
@@ -183,7 +177,7 @@ class IntegerLocalLossCNN(LocalLossModel):
     image_size : int
         Size of the input image
     fe_architecture: Sequence[tuple]
-        Architecture of the feature extractor, represented as a tuple of tuples.
+        Architecture of the feature extractor, represented as a tuple of tuples
         Each tuple represents a layer, and is composed of:
         - Layer type: 'Conv2d', 'MaxPool2d', 'AvgPool2d'
         - Layer parameters: num_filters, kernel_size, stride, padding
@@ -196,7 +190,7 @@ class IntegerLocalLossCNN(LocalLossModel):
     num_hidden_fc: tuple[int]
         A tuple of integers representing the number of neurons of each hidden layer
     lr_amp_factor: int, default=None
-        Amplification factor of the learning rate to be used in local loss blocks.
+        Amplification factor of the learning rate to be used in local loss blocks
         If None, it is computed automatically.
     fe_dropout_rate: float, default=0.0
         Dropout rate to be used in the feature extractor
@@ -205,11 +199,11 @@ class IntegerLocalLossCNN(LocalLossModel):
     bias: bool, default=True
         Whether to learn an additive bias term of not
     fwd_decay_inv: int, default=0
-        The amount of weight decay to apply during parameter updates in the forward part of the blocks.
+        The amount of weight decay to apply during parameter updates in the forward part of the blocks
         When equal to 0, no weight decay is applied.
         With larger numbers, the weight decay is smaller.
     subnet_decay_inv: int, default=0
-        The amount of weight decay to apply during parameter updates in the subnetworks of the blocks.
+        The amount of weight decay to apply during parameter updates in the learning layers of the blocks
         When equal to 0, no weight decay is applied.
         With larger numbers, the weight decay is smaller.
     layers: Sequential
@@ -221,7 +215,7 @@ class IntegerLocalLossCNN(LocalLossModel):
     classifier: IntegerLocalLossMLP
         Final dense classifier of the model
     subnet_pooling_type: str, default='max'
-        Type of pooling to be used in the linear subnetwork
+        Type of pooling to be used in the learning layers
     adjust_conv_amp: bool, default=True
         Whether to adjust the amplification factor of Conv2d layers based on the input size and pooling size
     """

@@ -1,18 +1,18 @@
 from typing import Literal
 
-import cupy as cp
 import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
 from tqdm.auto import trange
+import seaborn as sns
+import numpy as np
+import cupy as cp
 
-from lib.models.local_loss_models import IntegerLocalLossMLP, IntegerLocalLossCNN
-from lib.optim.lr_schedulers import ConstantLR
 from lib.utils.data import shuffle_dataset, AugmentationPipeline, RandomCrop, RandomHorizontalFlip
-from lib.utils.enums import NonLinearity, Initialization, OptimizerName, Dataset
-from lib.utils.misc import to_cpu
+from lib.models.local_loss_models import IntegerLocalLossMLP, IntegerLocalLossCNN
 from lib.utils.nn import accuracy, plot_history, EarlyStopping, ReduceLROnPlateau
+from lib.utils.enums import NonLinearity, Initialization, OptimizerName, Dataset
 from lib.utils.train import train_step_local, val_step
+from lib.optim.lr_schedulers import ConstantLR
+from lib.utils.misc import to_cpu
 
 sns.set_theme()
 

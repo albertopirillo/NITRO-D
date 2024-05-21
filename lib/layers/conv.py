@@ -119,7 +119,7 @@ def build_sub_matrices(x: np.ndarray, kernel_shape: tuple[int, ...], stride: tup
 
 class Conv2d(Module, ABC):
     """
-    Base class for all convolutional 2d layers, which computes a convolution between the input and a set of filters.
+    Base class for all convolutional 2d layers.
 
     Attributes
     ----------

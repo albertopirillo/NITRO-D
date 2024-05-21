@@ -10,8 +10,8 @@ from lib.utils.nn import create_non_linearity
 
 class LocalLinearBlock(LocalLossBlock):
     """
-    A local loss block containing the following layers:
-    - Integer arithmetic Linear layer
+    A local-loss block containing the following layers:
+    - Integer Linear layer
     - Scaling layer
     - Non-linearity
     - Dropout layer (optional)
@@ -30,17 +30,17 @@ class LocalLinearBlock(LocalLossBlock):
         Amplification factor of the learning rate to be used in the forward part of the block.
         If None, it is computed automatically.
     fwd_decay_inv: int, default=0
-        Inverse of the decay rate to be used in the IntegerLinear layer
+        Inverse of the decay rate to be used in the Integer Linear forward layer
     subnet_decay_inv: int, default=0
-        Inverse of the decay rate to be used in the linear subnetwork layer
+        Inverse of the decay rate to be used in the Integer Linear learning layer
     bias: bool
-        Whether to use a bias in the IntegerLinear layer
+        Whether to use a bias in the Integer layers
     layers: Sequential
-        Forward network of the block
+        The forward layers of the block
     last_activation: np.ndarray
         The output of the block at the previous training step, used to compute the local loss
     pred_loss_net: Sequential
-        The linear local loss subnetwork used to compute the local loss
+        The learning layers used to compute the local loss
     """
 
     def __init__(self, in_features: int, out_features: int, num_classes: int, non_linearity: NonLinearity,

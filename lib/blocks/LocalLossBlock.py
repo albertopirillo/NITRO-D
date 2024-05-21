@@ -11,7 +11,7 @@ from lib.utils.nn import l2_loss, accuracy, l2_loss_grad
 class LocalLossBlock(Model, ABC):
     """
     Base class for all blocks that use local loss.
-    The block is trained by locally generated error signal based on MSE and/or similarity matching loss.
+    The block is trained by locally generated error signal based on MSE loss.
     In debug mode, the activations and gradients of the forward and backward passes, respectively, will be saved.
 
     Attributes
@@ -19,15 +19,15 @@ class LocalLossBlock(Model, ABC):
     local_loss: Literal['pred', 'sim', 'predsim'], default='pred'
         The type of local loss to be used
     beta: float, default=0.99
-        The parameter to compute the predsim
+        The parameter to compute the predsim loss
     subnet_trainable: bool, default=True
-        If True, the parameters of the local loss subnetwork(s) are updated during training
+        If True, the parameters of the learning layers are updated during training
     layers: Sequential
-        Forward network of the block
+        The forward layers of the block
     last_activation: np.ndarray
         The output of the block at the previous training step, used to compute the local loss
     pred_loss_net: Sequential
-        The linear local loss subnetwork used to compute the local loss
+        The learning layers used to compute the local loss
     """
 
     def __init__(self, local_loss: Literal['pred', 'sim', 'predsim'] = 'pred', beta: float = 0.99,
@@ -72,7 +72,7 @@ class LocalLossBlock(Model, ABC):
                 raise NotImplementedError('sim subnetwork is not implemented yet')
 
             case 'pred':
-                # Forward pass of the local loss subnetwork
+                # Forward pass of the learning layers
                 y_hat_local = self.pred_loss_net(h)
                 loss_pred = l2_loss(y_onehot, y_hat_local)
                 grad_pred = l2_loss_grad(y_onehot, y_hat_local)
@@ -107,13 +107,13 @@ class LocalLossBlock(Model, ABC):
             The local loss of the block, i.e., the gradient of the loss w.r.t.
             the input of the block
         """
-        # Forward pass of the local loss subnetwork and compute the local loss
+        # Forward pass of the learning layers and compute the local loss
         local_loss, delta = self.compute_local_loss(self.last_activation, y_true)
 
-        # Back-propagate through the local loss subnetwork
+        # Back-propagate through the learning layers
         delta = self.pred_loss_net.backward(delta, lr_inv)
 
-        # Back-propagate through the forward network
+        # Back-propagate through the forward layers
         self.layers.backward(delta, lr_inv)
         return local_loss
 
@@ -157,7 +157,7 @@ class LocalLossBlock(Model, ABC):
 
     def get_saved_subnet_activations(self) -> dict[str, np.ndarray]:
         """
-        Get the saved activations of the local loss subnetwork(s).
+        Get the saved activations of the learning layers.
 
         Returns
         -------
@@ -171,7 +171,7 @@ class LocalLossBlock(Model, ABC):
 
     def get_saved_subnet_gradients(self) -> dict[str, np.ndarray]:
         """
-        Get the saved gradients of the local loss subnetwork(s).
+        Get the saved gradients of the learning layers.
 
         Returns
         -------
@@ -185,7 +185,7 @@ class LocalLossBlock(Model, ABC):
 
     def freeze_subnet(self) -> None:
         """
-        Freeze the parameters of the local loss subnetwork, so that they are not updated during training.
+        Freeze the parameters of the learning layers, so that they are not updated during training.
 
         Returns
         -------
@@ -197,7 +197,7 @@ class LocalLossBlock(Model, ABC):
 
     def unfreeze_subnet(self) -> None:
         """
-        Unfreeze the parameters of the local loss subnetwork, so that they are updated during training.
+        Unfreeze the parameters of the learning layers, so that they are updated during training.
 
         Returns
         -------

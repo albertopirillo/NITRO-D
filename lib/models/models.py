@@ -149,7 +149,7 @@ class LocalLossModel(Model, ABC):
     non_linearity : Enum
         Non-linear activation function to be used in the model
     subnet_trainable: bool, default=True
-        Whether the subnetworks of the local loss blocks are trainable or not
+        Whether the learning layers of the local loss blocks are trainable or not
     """
 
     def __init__(self, num_classes: int, non_linearity: NonLinearity, subnet_trainable: bool = True,
@@ -223,7 +223,7 @@ class LocalLossModel(Model, ABC):
 
     def subnetworks_predict(self, x: np.ndarray, batch_size: int = 128, progress_bar: bool = False) -> list[np.ndarray]:
         """
-        Generates output predictions for the input samples, using the subnetworks of the local loss blocks.
+        Generates output predictions for the input samples, using the learning layers of the local loss blocks.
         It returns a tensor of shape (num_blocks, num_samples, num_classes) containing the predictions.
         Computation is done in batches, which are automatically generated.
 
@@ -239,7 +239,7 @@ class LocalLossModel(Model, ABC):
         Returns
         -------
         list: np.ndarray
-            List of predictions of the subnetworks of local loss blocks for the provided input data
+            List of predictions of the learning layers of local loss blocks for the provided input data
         """
         subnets_predictions = [[] for _ in range(len(self.blocks))]
         for i in trange(0, len(x), batch_size, disable=(not progress_bar)):
@@ -247,7 +247,7 @@ class LocalLossModel(Model, ABC):
             # Model.forward saves the activations of the blocks
             self.forward(x_batch)
             for j, block in enumerate(self.blocks):
-                # Iterate through the blocks and get the predictions of the subnetworks
+                # Iterate through the blocks and get the predictions of the learning layers
                 y_pred = block.pred_loss_net(block.last_activation)
                 subnets_predictions[j].append(y_pred)
         return [np.concatenate(predictions) for predictions in subnets_predictions]

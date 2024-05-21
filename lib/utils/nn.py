@@ -1,16 +1,16 @@
 import warnings
 
-import numpy as np
-import seaborn as sns
 from matplotlib import pyplot as plt
+import seaborn as sns
+import numpy as np
 
 from lib.layers.activations import PocketReLU, PocketLeakyReLU, PocketTanh
 from lib.layers.activations import NitroLeakyReLU, BipolarLeakyReLU, BipolarPocketReLU
-from lib.layers.modules import Module
-from lib.optim.Optimizer import Optimizer
-from lib.optim.optimizers import IntegerSGD
 from lib.utils.enums import NonLinearity, OptimizerName
 from lib.utils.misc import to_cpu, truncated_division
+from lib.optim.optimizers import IntegerSGD
+from lib.optim.Optimizer import Optimizer
+from lib.layers.modules import Module
 
 sns.set_theme()
 
@@ -65,8 +65,8 @@ def create_non_linearity(non_linearity: NonLinearity, **kwargs) -> Module:
             raise ValueError(f'Invalid non-linearity: {non_linearity}')
 
 
-def plot_history(loss_history: list[float, ...], val_loss_history: list[float, ...],
-                 acc_history: list[float, ...], val_acc_history: list[float, ...],
+def plot_history(loss_history: list[float], val_loss_history: list[float],
+                 acc_history: list[float], val_acc_history: list[float],
                  figsize: tuple[int, int] = (16, 5), log_scale: bool = False) -> None:
     fig, axs = plt.subplots(1, 2, figsize=figsize)
     axs[0].set_title('Loss')

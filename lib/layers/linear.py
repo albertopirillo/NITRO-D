@@ -21,8 +21,6 @@ class Linear(Module, ABC):
         Size of each input sample
     out_features: int
         Size of each output sample
-    last_input: np.array
-        Last input to the layer, used for backpropagation
     updates: list
         List of the updates of the weights of the layer during training, used for debugging
     weights: np.array
@@ -80,7 +78,7 @@ class Linear(Module, ABC):
 
     def compute_gradients(self, delta: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
-        The gradient to be propagated to the previous layer is given by a matrix multiplication
+        The gradient to be propagated to the previous layer is given by a matrix multiplication.
 
         Parameters
         ----------

@@ -113,7 +113,7 @@ class BipolarPocketReLU(PocketReLU):
 class PocketLeakyReLU(Module):
     """
     Element-wise leaky rectified linear unit (LeakyReLU) function, rescaled in the range [-127, 127].
-    It uses an integer division the negative part of the input to work with integer-only arithmetic.
+    It uses an integer division for the negative part of the input to work with integer-only arithmetic.
 
     Attributes
     ----------
@@ -161,7 +161,7 @@ class NitroLeakyReLU(PocketLeakyReLU):
     Mean-centered version of PocketLeakyReLU.
     It is still contained in the range [-127, 127].
     The mean correction term has been pre-computed.
-    It uses an integer division the negative part of the input to work with integer-only arithmetic.
+    It uses an integer division for the negative part of the input to work with integer-only arithmetic.
 
     Attributes
     ----------
