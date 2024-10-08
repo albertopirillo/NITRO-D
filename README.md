@@ -10,7 +10,15 @@ NITRO-D introduces both a **novel architecture** and a **novel integer-only lear
 
 BibTeX entry:
 ```bibtex
-TBD
+@misc{pirillo2024nitrodnativeintegeronlytraining,
+    title={NITRO-D: Native Integer-only Training of Deep Convolutional Neural Networks}, 
+    author={Alberto Pirillo and Luca Colombo and Manuel Roveri},
+    year={2024},
+    eprint={2407.11698},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG},
+    url={https://arxiv.org/abs/2407.11698}, 
+}
 ```
 
 
