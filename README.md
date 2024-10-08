@@ -1,6 +1,6 @@
 # NITRO-D: Native Integer-only Training of Deep Convolutional Neural Networks
 
-This repository is the official implementation of [NITRO-D: Native Integer-only Training of Deep Convolutional Neural Networks](TBD). 
+This repository is the official implementation of [NITRO-D: Native Integer-only Training of Deep Convolutional Neural Networks](https://arxiv.org/abs/2407.11698). 
 
 NITRO-D is a novel training framework for arbitrarily deep **integer-only** Convolutional Neural Networks (CNNs) that operates entirely in the integer-only domain for **both training and inference**. NITRO-D utilizes a unique learning algorithm derived from Local Error Signals (LES) and it represents the first work in the literature to enable the training of integer-only deep CNNs **without the need to introduce a quantization scheme**.
 
